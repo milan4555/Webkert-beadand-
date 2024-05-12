@@ -3,7 +3,7 @@
     <div #newExerciseForm id="newExerciseForm" class="row mt-4">
       <div class="col-md-1"></div>
       <div class="col-md-5">
-        <input id="exerciseName" placeholder="Gyakorlat neve..." name="name" class="form-control border-dark" formControlName="name">
+        <input id="exerciseName" placeholder="Gyakorlat neve..." name="name" class="form-control border-dark" formControlName="name" autocomplete="off">
         @if (exerciseForm.get('name')?.hasError('required') && exerciseForm.get('name')?.touched) {
           <div class="from-text text-danger fw-bold mt-2">Gyakorlat neve kötelező!</div>
         }

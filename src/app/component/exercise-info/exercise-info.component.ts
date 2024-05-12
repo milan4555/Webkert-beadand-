@@ -83,7 +83,6 @@ export class ExerciseInfoComponent implements OnInit {
                       .subscribe({
                         next: result4 => {
                           let row4 = result4.payload.toJSON() as Exercise;
-                          console.log(row2.exerciseId);
                           if (row4) {
                             this.exerciseList.push({
                               muscleType: row4.muscleType,

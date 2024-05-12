@@ -13,11 +13,11 @@
           @if (exerciseLogForm.get('exerciseId')?.hasError('required') && exerciseLogForm.get('exerciseId')?.touched) {
             <div class="from-text text-danger fw-bold mt-2">Gyakorlat neve kötelező!</div>
           }
-          <input type="number" id="startWeight" placeholder="Mozgatott súly (kg)..." name="startWeight" class="form-control border-dark mt-2" formControlName="startWeight">
+          <input type="number" id="startWeight" min="1" placeholder="Mozgatott súly (kg)..." name="startWeight" class="form-control border-dark mt-2" formControlName="startWeight" autocomplete="off">
           @if (exerciseLogForm.get('startWeight')?.hasError('required') && exerciseLogForm.get('startWeight')?.touched) {
             <div class="from-text text-danger fw-bold mt-2">Súly megadása kötelező!</div>
           }
-          <input type="number" id="rep" placeholder="Ismétlésszám (db)..." name="rep" class="form-control border-dark mt-2" formControlName="rep">
+          <input type="number" id="rep" min="1" placeholder="Ismétlésszám (db)..." name="rep" class="form-control border-dark mt-2" formControlName="rep" autocomplete="off">
           @if (exerciseLogForm.get('rep')?.hasError('required') && exerciseLogForm.get('rep')?.touched) {
             <div class="from-text text-danger fw-bold mt-2">Ismétlésszám megadása kötelező!</div>
           }
@@ -80,8 +80,8 @@
               <form [formGroup]="exerciseLogInfoForm" (submit)="onSubmitInfo(exerciseLog.id)">
                 <div class="row mb-3">
                   <div class="input-group">
-                    <input type="number" class="form-control form-control-sm border-dark" name="weight" placeholder="Súly..." formControlName="weight"/>
-                    <input type="number" class="form-control form-control-sm border-dark" name="rep" placeholder="Ismétlés..." formControlName="rep"/>
+                    <input type="number" class="form-control form-control-sm border-dark" min="1" name="weight" placeholder="Súly..." formControlName="weight"/>
+                    <input type="number" class="form-control form-control-sm border-dark" min="1" name="rep" placeholder="Ismétlés..." formControlName="rep"/>
                     <select class="form-control form-control-sm border-dark" name="type" formControlName="type">
                       <option value="false">Rendes</option>
                       <option value="true">Bemelegítés</option>

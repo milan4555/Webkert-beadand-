@@ -117,7 +117,6 @@ export class DashboardComponent implements OnInit {
     }
 
     getImagePath(muscleType: string): string {
-    console.log(muscleType);
       switch (muscleType) {
         case 'Hát':
           return 'backIcon.png';

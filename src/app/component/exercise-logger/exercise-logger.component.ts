@@ -43,8 +43,8 @@ export class ExerciseLoggerComponent implements OnInit {
               private router: Router) {
     this.exerciseLogForm = this.fb.group({
       exerciseId: new FormControl("", [Validators.required]),
-      startWeight: new FormControl("", [Validators.required]),
-      rep: new FormControl("", [Validators.required]),
+      startWeight: new FormControl("", [Validators.required,Validators.min(1)]),
+      rep: new FormControl("", [Validators.required, Validators.min(1)]),
       warmUp: new FormControl("", [Validators.required]),
       user: new FormControl("")
     })
@@ -61,6 +61,7 @@ export class ExerciseLoggerComponent implements OnInit {
       .snapshotChanges()
       .subscribe({
         next: (data4) => {
+          this.sessionNumber = '';
           data4.forEach((item4) => {
             let row = item4.payload.toJSON() as gymSession;
             if (!row.finished) {
@@ -88,7 +89,7 @@ export class ExerciseLoggerComponent implements OnInit {
                           next: (data3) => {
                             data3.forEach((item3) => {
                               let exerciseLogInfo = item3.payload.toJSON() as ExerciseLogInfo;
-                              if (exerciseLogInfo.exerciseLogId == item.key) {
+                              if (!this.usedExerciseInfos.find((ExerciseLogInfo) => ExerciseLogInfo.id === item3.key) && exerciseLogInfo.exerciseLogId == item.key) {
                                 this.usedExerciseInfos.push({
                                   id: item3.key || '',
                                   exerciseLogId: exerciseLogInfo.exerciseLogId,
