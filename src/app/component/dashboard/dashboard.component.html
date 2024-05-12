@@ -1,0 +1,51 @@
+<div class="container-fluid">
+  <form [formGroup]="exerciseForm" (submit)="onSubmit()">
+    <div #newExerciseForm id="newExerciseForm" class="row mt-4">
+      <div class="col-md-1"></div>
+      <div class="col-md-5">
+        <input id="exerciseName" placeholder="Gyakorlat neve..." name="name" class="form-control border-dark" formControlName="name">
+        @if (exerciseForm.get('name')?.hasError('required') && exerciseForm.get('name')?.touched) {
+          <div class="from-text text-danger fw-bold mt-2">Gyakorlat neve kötelező!</div>
+        }
+      </div>
+      <div class="col-md-5">
+        <select id="muscleType" name="muscleType" class="form-select border-dark" formControlName="muscleType">
+          <option value="">Válassz izomcsoportot...</option>
+          <option value="Mell">Mell</option>
+          <option value="Hát">Hát</option>
+          <option value="Váll">Váll</option>
+          <option value="Bicepsz">Bicepsz</option>
+          <option value="Tricepsz">Tricepsz</option>
+          <option value="Láb">Láb</option>
+        </select>
+        @if (exerciseForm.get('muscleType')?.hasError('required') && exerciseForm.get('muscleType')?.touched) {
+          <div class="from-text text-danger fw-bold mt-2">Izomcsoport kötelező!</div>
+        }
+      </div>
+      <input type="hidden" name="user" [ngModel]="localStorage.getItem('user')" formControlName="user">
+      <div class="col-md-1">
+        <button type="submit" class="btn btn-outline-success mx-1">✓</button>
+        <button type="button" class="btn btn-outline-danger mx-1" (click)="emptyForm()">x</button>
+      </div>
+    </div>
+  </form>
+  <hr style="color: black; opacity: 100%">
+  <div class="row d-flex justify-content-center mt-3">
+    @for (exercise of exercises; track $index)
+    {
+      <div class="col-auto my-3">
+        <mat-card class="border border-dark h-100">
+          <mat-card-header>
+            <div mat-card-avatar class="example-header-image"></div>
+            <mat-card-title>{{ exercise.name }}<br>Izom: {{ exercise.muscleType }}</mat-card-title>
+          </mat-card-header>
+          <img mat-card-image [src]="'assets/' + getImagePath(exercise.muscleType)">
+          <mat-card-actions style="margin-top: auto; text-align: center;">
+            <button mat-raised-button color="primary" class="mx-1" type="button" (click)="editExercise(exercise.id)">Módosítás</button>
+            <button mat-raised-button color="warn" class="mx-1" (click)="removeExercise(exercise.id)">Törlés</button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    }
+  </div>
+</div>

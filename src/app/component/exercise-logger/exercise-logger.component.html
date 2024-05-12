@@ -1,0 +1,104 @@
+<div class="container-fluid" xmlns="http://www.w3.org/1999/html">
+  <div class="row mt-3">
+    <div class="col-md-4">
+      <div class="p-3 border border-2 border-dark rounded-3">
+        <form [formGroup]="exerciseLogForm" (submit)="onSubmit()">
+          <h1 class="text-center">Új gyakorlat hozzáadása</h1>
+          <select id="exerciseId" name="exerciseId" class="form-select border-dark mt-2" formControlName="exerciseId">
+            <option value="">Válassz gyakorlatot...</option>
+            @for(exercise of exercises; track $index) {
+              <option value="{{exercise.id}}">{{exercise.name}}</option>
+            }
+          </select>
+          @if (exerciseLogForm.get('exerciseId')?.hasError('required') && exerciseLogForm.get('exerciseId')?.touched) {
+            <div class="from-text text-danger fw-bold mt-2">Gyakorlat neve kötelező!</div>
+          }
+          <input type="number" id="startWeight" placeholder="Mozgatott súly (kg)..." name="startWeight" class="form-control border-dark mt-2" formControlName="startWeight">
+          @if (exerciseLogForm.get('startWeight')?.hasError('required') && exerciseLogForm.get('startWeight')?.touched) {
+            <div class="from-text text-danger fw-bold mt-2">Súly megadása kötelező!</div>
+          }
+          <input type="number" id="rep" placeholder="Ismétlésszám (db)..." name="rep" class="form-control border-dark mt-2" formControlName="rep">
+          @if (exerciseLogForm.get('rep')?.hasError('required') && exerciseLogForm.get('rep')?.touched) {
+            <div class="from-text text-danger fw-bold mt-2">Ismétlésszám megadása kötelező!</div>
+          }
+          <select id="warmUp" name="warmUp" class="form-select border-dark mt-2" formControlName="warmUp">
+            <option value="">Bemelegítés?</option>
+            <option value="true">Igen</option>
+            <option value="false">Nem</option>
+          </select>
+          @if (exerciseLogForm.get('warmUp')?.hasError('required') && exerciseLogForm.get('warmUp')?.touched) {
+            <div class="from-text text-danger fw-bold mt-2">Gyakorlat típusa kötelező!</div>
+          }
+          <input type="hidden" name="user" [ngModel]="localStorage.getItem('user')" formControlName="user">
+          <div class="d-flex justify-content-center">
+            <button type="submit" class="btn btn-primary mt-3">Hozzáadás</button>
+          </div>
+        </form>
+      </div>
+      <div class="border border-2 border-dark rounded-3 mt-2">
+        <h4 class="text-center">SessionID: {{sessionNumber == '' ? 'Nincs' : sessionNumber}}</h4>
+        <div class="row pt-2">
+          <div class="col-md-4 text-center">
+            <h1>{{usedExercise.length == 0 ? 0 : usedExercise.length}}</h1>
+            <h4><b>GYAKORLAT</b></h4>
+          </div>
+          <div class="col-md-4 text-center">
+            <h1>{{sumWeight}}</h1>
+            <h4><b>KG</b></h4>
+          </div>
+          <div class="col-md-4 text-center">
+            <h1>{{sumRep}}</h1>
+            <h4><b>EMELÉSEK</b></h4>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex justify-content-center mt-2">
+        <button type="button" class="btn btn-danger" (click)="finishWorkout(sessionNumber)">Befejezés</button>
+      </div>
+    </div>
+    <div class="col-md-8">
+      <div class="row d-flex justify-content-center">
+      @for (exerciseLog of exerciseLogs; track $index) {
+        <div class="col-auto mt-3">
+          <div class="card text-center border border-2 border-dark" style="width: 21rem;">
+            <div class="card-body">
+              <h1 class="card-title text-center">{{ usedExercise[$index] ? usedExercise[$index].name : 'SZÖVEG' }}</h1>
+              <h4 class="card-text">Izomcsoport: <b>{{ usedExercise[$index] ? usedExercise[$index].muscleType : 'SZÖVEG' }}</b></h4>
+                <table class="table border border-dark rounded">
+                  @for(usedExerciseInfo of usedExerciseInfos; track usedExerciseInfo) {
+                    @if(usedExerciseInfo.exerciseLogId == exerciseLog.id) {
+                    <tr class="{{usedExerciseInfo.type ? 'text-danger' : 'success-success'}}">
+                      <td class="text-left">Súly: <b>{{usedExerciseInfo.weight}} kg</b></td>
+                      <td class="text-left">Ismétlés: <b>{{usedExerciseInfo.rep}} db</b></td>
+                      <td>
+                        <button class="btn btn-sm" (click)="deleteExerciseLogInfo(usedExerciseInfo.id)">x</button>
+                      </td>
+                    </tr>
+                    }
+                  }
+                </table>
+              <form [formGroup]="exerciseLogInfoForm" (submit)="onSubmitInfo(exerciseLog.id)">
+                <div class="row mb-3">
+                  <div class="input-group">
+                    <input type="number" class="form-control form-control-sm border-dark" name="weight" placeholder="Súly..." formControlName="weight"/>
+                    <input type="number" class="form-control form-control-sm border-dark" name="rep" placeholder="Ismétlés..." formControlName="rep"/>
+                    <select class="form-control form-control-sm border-dark" name="type" formControlName="type">
+                      <option value="false">Rendes</option>
+                      <option value="true">Bemelegítés</option>
+                    </select>
+                    <input type="hidden" formControlName="exerciseLogId">
+                    <input type="submit" class="btn btn-outline-success btn-sm" value="✓">
+                  </div>
+                </div>
+              </form>
+              <div class="text-center">
+                <button class="btn btn-danger mx-1" (click)="deleteExerciseLog(exerciseLog.id)">Törlés</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+      </div>
+    </div>
+  </div>
+</div>

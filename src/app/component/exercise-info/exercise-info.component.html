@@ -1,0 +1,31 @@
+<div class="row d-flex justify-content-center" *ngIf="isLoaded">
+  @for (gymSession of gymSessions; track $index) {
+    <div class="col-md-12 my-1">
+      <mat-expansion-panel hideToggle>
+        <mat-expansion-panel-header [collapsedHeight]="'150px'" [expandedHeight]="'150px'">
+          <mat-panel-title>
+            <b>SessionId:{{ gymSession.id }}<br>{{ gymSession.date }}</b>
+          </mat-panel-title>
+          <mat-panel-description>
+            Megemelt súly / összes ismétlés: <b>{{ gymSession.totalWeight }} kg / {{ gymSession.repCounter }} db</b>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <mat-divider></mat-divider>
+        <div class="row">
+          @for (exerciseLog of exerciseLogs; track $index) {
+            @if (exerciseLog.sessionNumber == gymSession.id) {
+              <div class="col-auto border border-1 rounded-2 border-dark p-2 mx-2">
+                <b>{{ exerciseList[$index] ? exerciseList[$index].name : 'SZÖVEG' }} ({{ exerciseList[$index] ? exerciseList[$index].muscleType : 'SZÖVEG' }}):</b><br>
+                @for (logInfo of usedExerciseInfos; track $index) {
+                  @if (exerciseLog.id == logInfo.exerciseLogId) {
+                    {{ logInfo.weight }} kg / {{ logInfo.rep }} db / {{ logInfo.type ? 'Bemelegítés' : 'Rendes' }}<br>
+                  }
+                }
+              </div>
+            }
+          }
+        </div>
+      </mat-expansion-panel>
+    </div>
+  }
+</div>
